@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: demo-appset
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - env: dev
+        server: https://kubernetes.default.svc
+      - env: prod
+        server: https://10.0.2.30:6443
+  template:
+    metadata:
+      name: 'demo-app-{{env}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/Yewon0106/gitops-demo.git
+        targetRevision: main
+        path: apps/{{env}}
+      destination:
+        server: '{{server}}'
+        namespace: default
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
