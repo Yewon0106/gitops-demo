@@ -23,7 +23,4 @@ spec:
       destination:
         server: '{{server}}'
         namespace: default
-      syncPolicy:
-        automated:
-          selfHeal: true
-          prune: true
+      syncPolicy: {}
